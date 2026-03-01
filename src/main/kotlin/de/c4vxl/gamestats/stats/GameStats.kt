@@ -6,6 +6,19 @@ import org.bukkit.entity.Player
 
 /**
  * Data object for player stats
+ *
+ * @param bukkitPlayer The player
+ * @param wins The amount of total games won
+ * @param losses The amount of games lost
+ * @param deaths The amount of deaths in all games
+ * @param kills The amount of kills in all games
+ * @param eliminations The amount of eliminations in all games
+ * @param currentWinStreak The current win streak
+ * @param bestWinStreak The currently best win streak
+ * @param killRecord The most amount of kills in a game
+ * @param eliminationRecord The most amount of eliminations in a game
+ * @param currentKills The current amount of kills in the current game
+ * @param currentEliminations The current amount of eliminations in the current game
  */
 data class GameStats(
     val bukkitPlayer: Player,
@@ -15,7 +28,11 @@ data class GameStats(
     var kills: Int,
     var eliminations: Int,
     var currentWinStreak: Int,
-    var bestWinStreak: Int
+    var bestWinStreak: Int,
+    var killRecord: Int,
+    var eliminationRecord: Int,
+    var currentKills: Int = 0,
+    var currentEliminations: Int = 0
 ) {
     /**
      * Returns the game bukkitPlayer instance
@@ -48,8 +65,6 @@ data class GameStats(
         get() = wins - losses
 
 
-
-
     enum class ActionType {
         WIN,
         LOSS,
@@ -63,6 +78,7 @@ data class GameStats(
      * @param type The action
      */
     fun recordAction(type: ActionType) {
+        // Update values
         when (type) {
             ActionType.WIN -> {
                 wins++
@@ -75,13 +91,24 @@ data class GameStats(
             }
             ActionType.KILL -> {
                 kills++
+                currentKills++
+                killRecord = maxOf(killRecord, currentKills)
             }
             ActionType.DEATH -> {
                 deaths++
             }
             ActionType.ELIMINATION -> {
                 eliminations++
+                currentEliminations++
+                eliminationRecord = maxOf(eliminationRecord, currentEliminations)
             }
         }
+
+        // Save
+        StatsConfig.save(this)
+    }
+
+    override fun toString(): String {
+        return "GameStats(bukkitPlayer=${bukkitPlayer.name}, wins=$wins, losses=$losses, deaths=$deaths, kills=$kills, eliminations=$eliminations, currentWinStreak=$currentWinStreak, bestWinStreak=$bestWinStreak, killRecord=$killRecord, eliminationRecord=$eliminationRecord, currentKills=$currentKills, currentEliminations=$currentEliminations)"
     }
 }

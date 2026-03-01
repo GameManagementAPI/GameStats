@@ -2,9 +2,16 @@ package de.c4vxl.gamestats
 
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
+import de.c4vxl.gamestats.handler.GameHandler
+import de.c4vxl.gamestats.stats.GameStats
+import de.c4vxl.gamestats.stats.StatsConfig
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
+import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
 
@@ -45,6 +52,9 @@ class Main : JavaPlugin() {
                     ResourceUtils.readResource("lang/$langName.yml", Main::class.java)
                 )
             }
+
+        // Register handlers
+        GameHandler()
 
         logger.info("[+] $name has been enabled!")
     }

@@ -1,5 +1,6 @@
 package de.c4vxl.gamestats.stats
 
+import de.c4vxl.gamemanager.gma.player.GMAPlayer
 import de.c4vxl.gamestats.Main
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -26,6 +27,12 @@ object StatsConfig {
         )
 
     /**
+     * Returns the players game statistics
+     */
+    val GMAPlayer.stats: GameStats get() =
+        get(this.bukkitPlayer)
+
+    /**
      * Retrieves the game stats of a player
      * @param player The player to retrieve the stats of
      */
@@ -40,7 +47,9 @@ object StatsConfig {
             config.getInt("kills", 0),
             config.getInt("eliminations", 0),
             config.getInt("currentWinStreak", 0),
-            config.getInt("bestWinStreak", 0)
+            config.getInt("bestWinStreak", 0),
+            config.getInt("currentKills", 0),
+            config.getInt("currentEliminations", 0)
         )
     }
 
@@ -59,6 +68,10 @@ object StatsConfig {
         config.set("eliminations", stats.eliminations)
         config.set("currentWinStreak", stats.currentWinStreak)
         config.set("bestWinStreak", stats.bestWinStreak)
+        config.set("killRecord", stats.killRecord)
+        config.set("eliminationRecord", stats.eliminationRecord)
+        config.set("currentKills", stats.currentKills)
+        config.set("currentEliminations", stats.currentEliminations)
 
         // Save
         config.save(
