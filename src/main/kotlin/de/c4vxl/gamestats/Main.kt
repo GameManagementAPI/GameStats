@@ -4,6 +4,7 @@ import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
 
@@ -11,6 +12,7 @@ class Main : JavaPlugin() {
     companion object {
         lateinit var instance: Main
         lateinit var logger: Logger
+        lateinit var config: FileConfiguration
     }
 
     override fun onLoad() {
@@ -28,6 +30,11 @@ class Main : JavaPlugin() {
     override fun onEnable() {
         // Enable CommandAPI
         CommandAPI.onEnable()
+
+        // Load config
+        saveResource("config.yml", false)
+        reloadConfig()
+        Main.config = this.config
 
         // Register language extensions
         ResourceUtils.readResource("langs", Main::class.java).split("\n")
