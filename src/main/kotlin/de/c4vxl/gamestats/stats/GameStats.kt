@@ -31,8 +31,8 @@ data class GameStats(
     var bestWinStreak: Int,
     var killRecord: Int,
     var eliminationRecord: Int,
-    var currentKills: Int = 0,
-    var currentEliminations: Int = 0
+    var currentKills: Int,
+    var currentEliminations: Int
 ) {
     /**
      * Returns the game bukkitPlayer instance

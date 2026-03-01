@@ -48,6 +48,8 @@ object StatsConfig {
             config.getInt("eliminations", 0),
             config.getInt("currentWinStreak", 0),
             config.getInt("bestWinStreak", 0),
+            config.getInt("killRecord", 0),
+            config.getInt("eliminationRecord", 0),
             config.getInt("currentKills", 0),
             config.getInt("currentEliminations", 0)
         )
