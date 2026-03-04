@@ -7,6 +7,7 @@ import de.c4vxl.gamestats.utils.HologramHelper
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 
 class HologramHandler : Listener {
@@ -16,6 +17,11 @@ class HologramHandler : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
+        HologramHelper.update(event.player)
+    }
+
+    @EventHandler
+    fun onWorldChange(event: PlayerChangedWorldEvent) {
         HologramHelper.update(event.player)
     }
 
