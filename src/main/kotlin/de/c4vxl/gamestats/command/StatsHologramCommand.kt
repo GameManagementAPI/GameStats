@@ -4,6 +4,7 @@ import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.language.Language.Companion.language
 import de.c4vxl.gamemanager.plugin.enums.Permission
 import de.c4vxl.gamestats.utils.HologramHelper
+import de.c4vxl.gamestats.utils.StatsHelper
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.Bukkit
@@ -36,14 +37,14 @@ object StatsHologramCommand {
 
         literalArgument("create") {
             greedyStringArgument("lines") {
-                replaceSuggestions(ArgumentSuggestions.strings { HologramHelper.possibleStatistics })
+                replaceSuggestions(ArgumentSuggestions.strings { StatsHelper.possibleStatistics })
 
                 playerExecutor { player, args ->
                     // Set lines
                     HologramHelper.hologramLines =
                         args.get("lines").toString()
                             .split(" ")
-                            .filter { it in HologramHelper.possibleStatistics }
+                            .filter { it in StatsHelper.possibleStatistics }
 
                     // Set location
                     HologramHelper.hologramPosition = player.location

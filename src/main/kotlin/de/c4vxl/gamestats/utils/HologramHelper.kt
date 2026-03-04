@@ -1,10 +1,7 @@
 package de.c4vxl.gamestats.utils
 
-import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
 import de.c4vxl.gamemanager.language.Language
-import de.c4vxl.gamemanager.language.Language.Companion.language
 import de.c4vxl.gamestats.Main
-import de.c4vxl.gamestats.stats.StatsConfig.stats
 import io.papermc.paper.adventure.PaperAdventure
 import net.kyori.adventure.text.Component
 import net.minecraft.network.protocol.Packet
@@ -20,8 +17,10 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.function.Predicate
-import kotlin.math.round
 
+/**
+ * A helper class for creating holograms
+ */
 object HologramHelper {
     /**
      * Holds the location where holograms are spawned
@@ -94,21 +93,12 @@ object HologramHelper {
     }
 
     /**
-     * Returns a list of all possible statistics a hologram can display
-     */
-    val possibleStatistics =
-        Language.default.child("gamestats").translations.keys
-            .filter { it.startsWith("hologram.text.") }
-            .map { it.removePrefix("hologram.text.") }
-            .toTypedArray()
-
-    /**
      * Sends a statistic-hologram to a player
      * @param player The player to send the statistic to
      * @param location The bottom location of the hologram
      * @param lines The lines to add to the hologram
      */
-    fun sendHologram(player: Player, location: Location, vararg lines: String) {
+    private fun sendHologram(player: Player, location: Location, vararg lines: String) {
         var y = 0.0
         lines.forEach {
             y += if (it == "sep") 0.5
@@ -117,7 +107,7 @@ object HologramHelper {
             sendHologram(
                 player,
                 location.clone().add(0.0, y, 0.0),
-                getStatisticLine(player, it)
+                StatsHelper.getStatisticLine(player, it)
             )
         }
     }
@@ -139,39 +129,5 @@ object HologramHelper {
         }
 
         sendHologram(player, pos, *lines.toTypedArray())
-    }
-    
-    /**
-     * Returns a line of a hologram for a specific statistic
-     * @param player The player the hologram should be sent to
-     * @param statistic The statistic
-     */
-    private fun getStatisticLine(player: Player, statistic: String): Component {
-        // Get statistic
-        val stats = player.gma.stats
-        val statisticString = when (statistic) {
-            "wins" -> stats.wins
-            "losses" -> stats.losses
-            "deaths" -> stats.deaths
-            "kills" -> stats.kills
-            "eliminations" -> stats.eliminations
-            "currentWinStreak" -> stats.currentWinStreak
-            "bestWinStreak" -> stats.bestWinStreak
-            "killRecord" -> stats.killRecord
-            "eliminationRecord" -> stats.eliminationRecord
-            "kd" -> stats.killDeathRatio
-            "netwins" -> stats.netWins
-            "winrate" -> round(stats.winRate * 100)
-            "totalgames" -> stats.totalGamesPlayed
-            else -> -1
-        }.toString() 
-        
-        // Get translation
-        return player.language.child("gamestats")
-            .getCmp(
-                "hologram.text.$statistic",
-                player.name,
-                statisticString
-            )
     }
 }

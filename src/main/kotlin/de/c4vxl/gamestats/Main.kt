@@ -2,10 +2,10 @@ package de.c4vxl.gamestats
 
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
+import de.c4vxl.gamestats.command.StatsCommand
 import de.c4vxl.gamestats.command.StatsHologramCommand
 import de.c4vxl.gamestats.handler.GameHandler
 import de.c4vxl.gamestats.handler.HologramHandler
-import de.c4vxl.gamestats.utils.HologramHelper
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
 import org.bukkit.configuration.file.FileConfiguration
@@ -52,6 +52,7 @@ class Main : JavaPlugin() {
 
         // Register command
         StatsHologramCommand
+        StatsCommand
 
         // Register handlers
         GameHandler()
