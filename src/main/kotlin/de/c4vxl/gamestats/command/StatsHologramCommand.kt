@@ -6,6 +6,7 @@ import de.c4vxl.gamemanager.plugin.enums.Permission
 import de.c4vxl.gamestats.utils.HologramHelper
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
+import org.bukkit.Bukkit
 
 /**
  * Command for configuring stats hologram
@@ -25,6 +26,10 @@ object StatsHologramCommand {
 
                 HologramHelper.hologramPosition = null
                 HologramHelper.hologramLines = listOf()
+
+                // Update for every player
+                Bukkit.getOnlinePlayers().forEach { HologramHelper.update(it) }
+
                 sender.sendMessage(sender.language.child("gamestats").getCmp("command.stats-hologram.remove.success"))
             }
         }
@@ -42,6 +47,9 @@ object StatsHologramCommand {
 
                     // Set location
                     HologramHelper.hologramPosition = player.location
+
+                    // Update for every player
+                    Bukkit.getOnlinePlayers().forEach { HologramHelper.update(it) }
 
                     player.sendMessage(player.language.child("gamestats").getCmp("command.stats-hologram.create.success"))
                 }
