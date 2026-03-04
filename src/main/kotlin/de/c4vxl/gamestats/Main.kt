@@ -2,7 +2,10 @@ package de.c4vxl.gamestats
 
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
+import de.c4vxl.gamestats.command.StatsHologramCommand
 import de.c4vxl.gamestats.handler.GameHandler
+import de.c4vxl.gamestats.handler.HologramHandler
+import de.c4vxl.gamestats.utils.HologramHelper
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
 import org.bukkit.configuration.file.FileConfiguration
@@ -41,14 +44,18 @@ class Main : JavaPlugin() {
         ResourceUtils.readResource("langs", Main::class.java).split("\n")
             .forEach { langName ->
                 Language.provideLanguageExtension(
-                    "template",
+                    "gamestats",
                     langName,
                     ResourceUtils.readResource("lang/$langName.yml", Main::class.java)
                 )
             }
 
+        // Register command
+        StatsHologramCommand
+
         // Register handlers
         GameHandler()
+        HologramHandler()
 
         logger.info("[+] $name has been enabled!")
     }
