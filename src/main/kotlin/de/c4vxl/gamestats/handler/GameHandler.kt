@@ -52,7 +52,8 @@ class GameHandler : Listener {
         event.player.stats.apply {
             currentKills = 0
             currentEliminations = 0
-            losses++
+            if (event.game.isRunning)
+                losses++
 
             StatsConfig.save(this)
         }
