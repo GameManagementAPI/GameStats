@@ -56,7 +56,7 @@ data class GameStats(
      * Returns the players kill/death ratio
      */
     val killDeathRatio: Double
-        get() = if (deaths == 0) 0.0 else kills.toDouble() / deaths
+        get() = if (deaths == 0) kills.toDouble() else kills.toDouble() / deaths
 
     /**
      * Returns the players wins - losses
