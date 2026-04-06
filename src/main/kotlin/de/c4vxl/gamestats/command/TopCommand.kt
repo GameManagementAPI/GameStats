@@ -3,7 +3,7 @@ package de.c4vxl.gamestats.command
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.language.Language.Companion.language
 import de.c4vxl.gamestats.stats.Leaderboard
-import de.c4vxl.gamestats.stats.Statistic
+import de.c4vxl.gamestats.stats.data.type.Statistic
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.commandTree
 import dev.jorel.commandapi.kotlindsl.playerExecutor

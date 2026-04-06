@@ -1,4 +1,4 @@
-package de.c4vxl.gamestats.stats
+package de.c4vxl.gamestats.stats.data.type
 
 enum class Statistic {
     WIN,

@@ -1,4 +1,4 @@
-package de.c4vxl.gamestats.stats
+package de.c4vxl.gamestats.stats.data
 
 import de.c4vxl.gamestats.Main
 import org.bukkit.configuration.file.YamlConfiguration

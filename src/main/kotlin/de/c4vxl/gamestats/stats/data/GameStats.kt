@@ -1,9 +1,9 @@
-package de.c4vxl.gamestats.stats
+package de.c4vxl.gamestats.stats.data
 
 import de.c4vxl.gamemanager.gma.player.GMAPlayer
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
+import de.c4vxl.gamestats.stats.data.type.Statistic
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import java.util.UUID
 
 /**

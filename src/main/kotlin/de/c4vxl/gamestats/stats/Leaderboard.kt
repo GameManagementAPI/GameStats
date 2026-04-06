@@ -1,5 +1,6 @@
 package de.c4vxl.gamestats.stats
 
+import de.c4vxl.gamestats.stats.data.type.Statistic
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
