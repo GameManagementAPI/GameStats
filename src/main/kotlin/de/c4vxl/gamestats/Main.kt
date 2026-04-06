@@ -3,10 +3,11 @@ package de.c4vxl.gamestats
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
 import de.c4vxl.gamestats.command.StatsCommand
-import de.c4vxl.gamestats.command.StatsHologramCommand
+import de.c4vxl.gamestats.command.HologramCommand
 import de.c4vxl.gamestats.command.TopCommand
 import de.c4vxl.gamestats.handler.GameHandler
 import de.c4vxl.gamestats.handler.HologramHandler
+import de.c4vxl.gamestats.stats.Leaderboard
 import de.c4vxl.gamestats.stats.Stats
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
@@ -53,13 +54,16 @@ class Main : JavaPlugin() {
             }
 
         // Register command
-        StatsHologramCommand
+        HologramCommand
         StatsCommand
         TopCommand
 
         // Register handlers
         GameHandler()
         HologramHandler()
+
+        // Build leaderboard cache
+        Leaderboard.rebuildCache()
 
         logger.info("[+] $name has been enabled!")
     }

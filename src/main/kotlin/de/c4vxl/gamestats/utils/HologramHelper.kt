@@ -1,8 +1,12 @@
 package de.c4vxl.gamestats.utils
 
+import de.c4vxl.gamemanager.language.Language.Companion.language
 import de.c4vxl.gamestats.Main
+import de.c4vxl.gamestats.stats.Leaderboard
+import de.c4vxl.gamestats.stats.data.type.Statistic
 import io.papermc.paper.adventure.PaperAdventure
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket
@@ -12,12 +16,13 @@ import net.minecraft.server.level.ServerEntity
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.decoration.ArmorStand
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
-import java.util.UUID
+import java.util.*
 import java.util.function.Predicate
 
 /**
@@ -29,7 +34,10 @@ object HologramHelper {
      */
     var markers: MutableList<UUID>
         get() = Main.config.getStringList("holograms").map { UUID.fromString(it) }.toMutableList()
-        set(value) = Main.config.set("holograms", value.map { it.toString() })
+        set(value) {
+            Main.config.set("holograms", value.map { it.toString() })
+            Main.config.save(Main.instance.dataFolder.resolve("config.yml"))
+        }
 
     /**
      * Holds all hologram entities for players
@@ -115,7 +123,13 @@ object HologramHelper {
             marker.persistentDataContainer.get(NamespacedKey.minecraft("gamestats_hologram_$key"), type)
 
         // Get data
-        val lines = get("lines", PersistentDataType.LIST.strings()) ?: listOf()
+        var lines = get("lines", PersistentDataType.LIST.strings()) ?: listOf()
+
+        if (lines.first().startsWith("leaderboard_"))
+            lines = buildLeaderboardLines(
+                player,
+                Statistic.valueOf(lines.first().removePrefix("leaderboard_"))
+            )
 
         // Send hologram
         sendHologram(
@@ -123,6 +137,40 @@ object HologramHelper {
             marker.location,
             *lines.toTypedArray()
         )
+    }
+
+    private fun buildLeaderboardLines(player: Player, statistic: Statistic): List<String> {
+        val leaderboard = Leaderboard.getTop(statistic)
+        val language = player.language.child("gamestats")
+
+        val ownPlace = Leaderboard.getPlace(player.uniqueId, statistic)
+
+        return buildList {
+            add("_leaderboard")
+            add("_sep")
+
+            for (i in 1..10) {
+                val entry = leaderboard.getOrNull(i - 1) ?: break
+                val pl = Bukkit.getOfflinePlayer(entry.first)
+
+                add(language.get(
+                    "leaderboard.${if (i <= 3) "top3" else "bottom"}",
+                    "$i",
+                    pl.name ?: break,
+                    MiniMessage.miniMessage().serialize(StatsHelper.getStatisticLine(pl, statistic.key, language))
+                ))
+            }
+
+            add("_sep")
+
+            ownPlace?.let {
+                add(language.get(
+                    "leaderboard.self",
+                    it.toString(),
+                    MiniMessage.miniMessage().serialize(StatsHelper.getStatisticLine(player, statistic.key, language))
+                ))
+            }
+        }.reversed()
     }
 
     /**
@@ -135,6 +183,7 @@ object HologramHelper {
         marker.isInvisible = true
         marker.isInvulnerable = true
         marker.setGravity(false)
+        marker.isPersistent = true
 
         fun <C : Any> set(key: String, type: PersistentDataType<*, C>, value: C) =
             marker.persistentDataContainer.set(NamespacedKey.minecraft("gamestats_hologram_$key"), type, value)

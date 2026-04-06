@@ -1,10 +1,10 @@
 "prefix": "<gray>[</gray><red>GameStats</red><gray>]</gray>"
 
-"command.stats-hologram.desc": "Allows admins to paste a hologram with player-specific statistics into the world."
-"command.stats-hologram.create.success": "${prefix} <green>Hologram has been created successfully!</green>"
+"command.hologram.desc": "Allows admins to paste a hologram with player-specific statistics into the world."
+"command.hologram.create.success": "${prefix} <green>Hologram has been created successfully!</green>"
 
-"command.stats-hologram.remove.failure.already": "${prefix} <red>There is no hologram near you right now!</red>"
-"command.stats-hologram.remove.success": "${prefix} <green>Successfully removed hologram!</green>"
+"command.hologram.remove.failure.already": "${prefix} <red>There is no hologram near you right now!</red>"
+"command.hologram.remove.success": "${prefix} <green>Successfully removed hologram!</green>"
 
 "command.stats.desc": "Allows players to view their game statistics."
 "command.stat.msg.all.l1": "${prefix} Your statistics:"
@@ -13,7 +13,7 @@
 
 "command.top.desc": "Returns the top 10 players in the leaderboard according to a specified statistic."
 "command.top.msg.all.l1": "${prefix} Leaderboard:"
-"command.top.msg.all.l2": "<gray>[</gray><lime>#$0</lime><gray>]</gray> $1 <gray>($2)</gray>"
+"command.top.msg.all.l2": "<gray>[</gray><green>#$0</green><gray>]</gray> $1 <gray>($2)</gray>"
 
 "stat.text._sep": "<gray>------------------</gray>"
 "stat.text._your_stats": "Your statistics:"
@@ -32,3 +32,6 @@
 "stat.text.netwins": "<gray>Net wins:</gray> $1"
 "stat.text.winrate": "<gray>Win rate:</gray> $1%"
 "stat.text.totalgames": "<gray>Total games played:</gray> $1"
+"leaderboard.top3": "<gold>#$0</gold> $1 <gray>($2)</gray>"
+"leaderboard.bottom": "<grey>#$0</grey> $1 <gray>($2)</gray>"
+"leaderboard.self": "<gray>Your place:</gray> #$0"
