@@ -2,12 +2,14 @@ package de.c4vxl.gamestats.stats
 
 import de.c4vxl.gamemanager.gma.player.GMAPlayer
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import java.util.UUID
 
 /**
  * Data object for player stats
  *
- * @param bukkitPlayer The player
+ * @param uuid The uuid of the player
  * @param wins The amount of total games won
  * @param losses The amount of games lost
  * @param deaths The amount of deaths in all games
@@ -21,7 +23,7 @@ import org.bukkit.entity.Player
  * @param currentEliminations The current amount of eliminations in the current game
  */
 data class GameStats(
-    val bukkitPlayer: Player,
+    val uuid: UUID,
     var wins: Int,
     var losses: Int,
     var deaths: Int,
@@ -35,10 +37,16 @@ data class GameStats(
     var currentEliminations: Int
 ) {
     /**
+     * Returns the bukkit player holding this statistic
+     */
+    val bukkitPlayer
+        get() = Bukkit.getOfflinePlayer(uuid)
+
+    /**
      * Returns the game bukkitPlayer instance
      */
-    val gamePlayer: GMAPlayer
-        get() = bukkitPlayer.gma
+    val gamePlayer: GMAPlayer?
+        get() = bukkitPlayer.player?.gma
 
     /**
      * Returns the total amount of games the player has played
@@ -122,9 +130,6 @@ data class GameStats(
             }
             else -> {}
         }
-
-        // Save
-        StatsConfig.save(this)
     }
 
     override fun toString(): String {

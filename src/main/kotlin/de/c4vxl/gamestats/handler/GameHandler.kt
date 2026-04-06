@@ -4,8 +4,7 @@ import de.c4vxl.gamemanager.gma.event.player.*
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
 import de.c4vxl.gamestats.Main
 import de.c4vxl.gamestats.stats.GameStats
-import de.c4vxl.gamestats.stats.StatsConfig
-import de.c4vxl.gamestats.stats.StatsConfig.stats
+import de.c4vxl.gamestats.stats.Stats
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,12 +17,12 @@ class GameHandler : Listener {
 
     @EventHandler
     fun onWin(event: GamePlayerWinEvent) {
-        event.player.stats.recordAction(GameStats.Statistic.WIN)
+        Stats.modify(event.player) { recordAction(GameStats.Statistic.WIN) }
     }
 
     @EventHandler
     fun onLoose(event: GamePlayerLooseEvent) {
-        event.player.stats.recordAction(GameStats.Statistic.LOSS)
+        Stats.modify(event.player) { recordAction(GameStats.Statistic.LOSS) }
     }
 
     @EventHandler
@@ -34,28 +33,28 @@ class GameHandler : Listener {
         if (!player.gma.isInGame) return
         if (!killer.gma.isInGame) return
 
-        killer.gma.stats.recordAction(GameStats.Statistic.KILL)
+        Stats.modify(killer) { recordAction(GameStats.Statistic.KILL) }
     }
 
     @EventHandler
     fun onDeath(event: GamePlayerDeathEvent) {
-        event.player.stats.recordAction(GameStats.Statistic.DEATH)
+        Stats.modify(event.player) { recordAction(GameStats.Statistic.DEATH) }
     }
 
     @EventHandler
     fun onEliminate(event: GamePlayerEliminateEvent) {
-        event.killer?.stats?.recordAction(GameStats.Statistic.ELIMINATION)
+        event.killer?.let {
+            Stats.modify(it) { recordAction(GameStats.Statistic.ELIMINATION) }
+        }
     }
 
     @EventHandler
     fun onGameQuit(event: GamePlayerQuitEvent) {
-        event.player.stats.apply {
+        Stats.modify(event.player.bukkitPlayer) {
             currentKills = 0
             currentEliminations = 0
             if (event.game.isRunning)
                 losses++
-
-            StatsConfig.save(this)
         }
     }
 }

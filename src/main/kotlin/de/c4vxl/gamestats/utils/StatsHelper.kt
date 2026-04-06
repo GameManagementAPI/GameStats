@@ -3,7 +3,9 @@ package de.c4vxl.gamestats.utils
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
 import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.language.Language.Companion.language
-import de.c4vxl.gamestats.stats.StatsConfig.stats
+import de.c4vxl.gamestats.stats.Stats
+import de.c4vxl.gamestats.stats.Stats.stats
+import de.c4vxl.gamestats.stats.StatsConfig
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import kotlin.math.round
@@ -25,7 +27,7 @@ object StatsHelper {
      */
     fun getStatisticLine(player: Player, statistic: String): Component {
         // Get statistic
-        val stats = player.gma.stats
+        val stats = player.stats
         val statisticString = when (statistic) {
             "wins" -> stats.wins
             "losses" -> stats.losses

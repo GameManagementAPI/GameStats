@@ -6,6 +6,7 @@ import de.c4vxl.gamestats.command.StatsCommand
 import de.c4vxl.gamestats.command.StatsHologramCommand
 import de.c4vxl.gamestats.handler.GameHandler
 import de.c4vxl.gamestats.handler.HologramHandler
+import de.c4vxl.gamestats.stats.Stats
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIPaperConfig
 import org.bukkit.configuration.file.FileConfiguration
@@ -64,6 +65,9 @@ class Main : JavaPlugin() {
     override fun onDisable() {
         // Disable CommandAPI
         CommandAPI.onDisable()
+
+        // Save data cache
+        Stats.saveAll()
 
         logger.info("[+] $name has been disabled!")
     }

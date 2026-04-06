@@ -1,10 +1,9 @@
 package de.c4vxl.gamestats.stats
 
-import de.c4vxl.gamemanager.gma.player.GMAPlayer
 import de.c4vxl.gamestats.Main
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.entity.Player
 import java.io.File
+import java.util.*
 
 /**
  * Access point to the internal database
@@ -19,28 +18,23 @@ object StatsConfig {
 
     /**
      * Returns the config of a bukkitPlayer
+     * @param uuid The uuid of the player
      */
-    private fun getConfig(player: Player): YamlConfiguration =
+    private fun getConfig(uuid: UUID): YamlConfiguration =
         YamlConfiguration.loadConfiguration(
-            dbDir.resolve(player.uniqueId.toString())
+            dbDir.resolve(uuid.toString())
                 .also { it.createNewFile() }
         )
 
     /**
-     * Returns the players game statistics
-     */
-    val GMAPlayer.stats: GameStats get() =
-        get(this.bukkitPlayer)
-
-    /**
      * Retrieves the game stats of a player
-     * @param player The player to retrieve the stats of
+     * @param uuid The players uuid to retrieve the stats of
      */
-    fun get(player: Player): GameStats {
+    fun get(uuid: UUID): GameStats {
         // Load stats
-        val config = getConfig(player)
+        val config = getConfig(uuid)
         return GameStats(
-            player,
+            uuid,
             config.getInt("wins", 0),
             config.getInt("losses", 0),
             config.getInt("deaths", 0),
@@ -60,7 +54,7 @@ object StatsConfig {
      * @param stats The statistic
      */
     fun save(stats: GameStats) {
-        val config = getConfig(stats.bukkitPlayer)
+        val config = getConfig(stats.bukkitPlayer.uniqueId)
 
         // Set
         config.set("wins", stats.wins)
