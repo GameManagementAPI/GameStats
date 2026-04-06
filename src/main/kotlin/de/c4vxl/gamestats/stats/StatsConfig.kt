@@ -12,7 +12,7 @@ object StatsConfig {
     /**
      * Returns the database path
      */
-    private val dbDir: File get() =
+    val dbDir: File get() =
         File(Main.config.getString("config.db-path") ?: "./stats/")
             .also { it.mkdirs() }
 

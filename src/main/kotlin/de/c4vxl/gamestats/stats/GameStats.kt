@@ -72,17 +72,6 @@ data class GameStats(
     val netWins: Int
         get() = wins - losses
 
-
-    enum class Statistic {
-        WIN,
-        LOSS,
-        KILL,
-        DEATH,
-        ELIMINATION,
-        NET_WINS,
-        WIN_RATE
-    }
-
     /**
      * Returns the value of a specific statistic
      * @param type The statistic to return

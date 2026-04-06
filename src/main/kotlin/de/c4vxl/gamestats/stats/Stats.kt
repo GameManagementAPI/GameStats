@@ -11,14 +11,33 @@ import java.util.concurrent.ConcurrentHashMap
  * Central access point for statistics data
  */
 object Stats {
+    /**
+     * Holds a cache of the data in the db
+     */
     private val cache = ConcurrentHashMap<UUID, StatsCache>()
+
+    /**
+     * Holds a cache of all db keys
+     */
+    private val allUUIDs: List<UUID> by lazy {
+        StatsConfig.dbDir.listFiles { file, _ -> file.isFile }
+            ?.map { UUID.fromString(it.nameWithoutExtension) }
+            ?: emptyList()
+    }
 
     init {
         // Register automatic saving of data cache
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, Runnable {
             saveAll()
+            Leaderboard.rebuildCache()
         }, 0, 20 * 60 * 10)
     }
+
+    /**
+     * Loads all existing statistics into cache
+     */
+    fun getAll(): List<GameStats> =
+        allUUIDs.map { get(it) }
 
     /**
      * Gets the data of a specific player
