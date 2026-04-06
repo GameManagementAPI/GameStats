@@ -20,7 +20,7 @@ object Stats {
      * Holds a cache of all db keys
      */
     private val allUUIDs: List<UUID> by lazy {
-        StatsConfig.dbDir.listFiles { file, _ -> file.isFile }
+        StatsConfig.dbDir.listFiles()
             ?.map { UUID.fromString(it.nameWithoutExtension) }
             ?: emptyList()
     }

@@ -34,7 +34,7 @@ object Leaderboard {
      * @param limit The amount of entries to fetch
      * @param type The type of statistic to track by
      */
-    fun getTop(limit: Int = 10, type: Statistic): List<Pair<UUID, Double>> =
+    fun getTop(type: Statistic, limit: Int = 10): List<Pair<UUID, Double>> =
         getLeaderboard(type)
             .take(limit)
             .map { it.first to it.second }
