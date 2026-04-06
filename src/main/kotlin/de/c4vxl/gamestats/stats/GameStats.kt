@@ -65,43 +65,62 @@ data class GameStats(
         get() = wins - losses
 
 
-    enum class ActionType {
+    enum class Statistic {
         WIN,
         LOSS,
         KILL,
         DEATH,
-        ELIMINATION
+        ELIMINATION,
+        NET_WINS,
+        WIN_RATE
+    }
+
+    /**
+     * Returns the value of a specific statistic
+     * @param type The statistic to return
+     */
+    fun getValue(type: Statistic): Number {
+        return when (type) {
+            Statistic.WIN -> wins
+            Statistic.LOSS -> losses
+            Statistic.KILL -> kills
+            Statistic.DEATH -> deaths
+            Statistic.ELIMINATION -> eliminations
+            Statistic.NET_WINS -> netWins
+            Statistic.WIN_RATE -> winRate
+        }
     }
 
     /**
      * Record when an action happened and save it to the db
      * @param type The action
      */
-    fun recordAction(type: ActionType) {
+    fun recordAction(type: Statistic) {
         // Update values
         when (type) {
-            ActionType.WIN -> {
+            Statistic.WIN -> {
                 wins++
                 currentWinStreak++
                 bestWinStreak = maxOf(bestWinStreak, currentWinStreak)
             }
-            ActionType.LOSS -> {
+            Statistic.LOSS -> {
                 losses++
                 currentWinStreak = 0
             }
-            ActionType.KILL -> {
+            Statistic.KILL -> {
                 kills++
                 currentKills++
                 killRecord = maxOf(killRecord, currentKills)
             }
-            ActionType.DEATH -> {
+            Statistic.DEATH -> {
                 deaths++
             }
-            ActionType.ELIMINATION -> {
+            Statistic.ELIMINATION -> {
                 eliminations++
                 currentEliminations++
                 eliminationRecord = maxOf(eliminationRecord, currentEliminations)
             }
+            else -> {}
         }
 
         // Save

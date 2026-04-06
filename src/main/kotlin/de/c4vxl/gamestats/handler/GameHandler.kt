@@ -18,12 +18,12 @@ class GameHandler : Listener {
 
     @EventHandler
     fun onWin(event: GamePlayerWinEvent) {
-        event.player.stats.recordAction(GameStats.ActionType.WIN)
+        event.player.stats.recordAction(GameStats.Statistic.WIN)
     }
 
     @EventHandler
     fun onLoose(event: GamePlayerLooseEvent) {
-        event.player.stats.recordAction(GameStats.ActionType.LOSS)
+        event.player.stats.recordAction(GameStats.Statistic.LOSS)
     }
 
     @EventHandler
@@ -34,17 +34,17 @@ class GameHandler : Listener {
         if (!player.gma.isInGame) return
         if (!killer.gma.isInGame) return
 
-        killer.gma.stats.recordAction(GameStats.ActionType.KILL)
+        killer.gma.stats.recordAction(GameStats.Statistic.KILL)
     }
 
     @EventHandler
     fun onDeath(event: GamePlayerDeathEvent) {
-        event.player.stats.recordAction(GameStats.ActionType.DEATH)
+        event.player.stats.recordAction(GameStats.Statistic.DEATH)
     }
 
     @EventHandler
     fun onEliminate(event: GamePlayerEliminateEvent) {
-        event.killer?.stats?.recordAction(GameStats.ActionType.ELIMINATION)
+        event.killer?.stats?.recordAction(GameStats.Statistic.ELIMINATION)
     }
 
     @EventHandler
