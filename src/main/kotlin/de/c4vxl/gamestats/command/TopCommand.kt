@@ -32,12 +32,12 @@ object TopCommand {
 
                 for (i in 1..10) {
                     val entry = leaderboard.getOrNull(i - 1)
-                    val uuid = entry?.first
-                    val name = uuid?.let { Bukkit.getOfflinePlayer(uuid).name } ?: "???"
+                    val uuid = entry?.first ?: break
+                    val name = Bukkit.getOfflinePlayer(uuid).name ?: break
 
                     component = component
                         .appendNewline()
-                        .append(lang.getCmp("command.top.msg.all.l2", i.toString(), name, entry?.second?.toString() ?: "/"))
+                        .append(lang.getCmp("command.top.msg.all.l2", i.toString(), name, entry.second.toString()))
                 }
 
                 player.sendMessage(component)
