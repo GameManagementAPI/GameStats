@@ -1,6 +1,5 @@
 package de.c4vxl.gamestats.utils
 
-import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamestats.Main
 import io.papermc.paper.adventure.PaperAdventure
 import net.kyori.adventure.text.Component
@@ -14,8 +13,11 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.decoration.ArmorStand
 import org.bukkit.Location
+import org.bukkit.NamespacedKey
 import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.entity.Player
+import org.bukkit.persistence.PersistentDataType
+import java.util.UUID
 import java.util.function.Predicate
 
 /**
@@ -23,24 +25,11 @@ import java.util.function.Predicate
  */
 object HologramHelper {
     /**
-     * Holds the location where holograms are spawned
+     * Holds a list of all markers
      */
-    var hologramPosition: Location?
-        get() = Main.config.getLocation("hologram.loc")
-        set(value) {
-            Main.config.set("hologram.loc", value)
-            Main.config.save(Main.instance.dataFolder.resolve("config.yml"))
-        }
-
-    /**
-     * Holds the different lines of the hologram
-     */
-    var hologramLines: List<String>
-        get() = Main.config.getStringList("hologram.lines")
-        set(value) {
-            Main.config.set("hologram.lines", value)
-            Main.config.save(Main.instance.dataFolder.resolve("config.yml"))
-        }
+    var markers: MutableList<UUID>
+        get() = Main.config.getStringList("holograms").map { UUID.fromString(it) }.toMutableList()
+        set(value) = Main.config.set("holograms", value.map { it.toString() })
 
     /**
      * Holds all hologram entities for players
@@ -113,13 +102,54 @@ object HologramHelper {
     }
 
     /**
+     * Constructs a hologram from its marker and sends it to a player
+     * @param player The player to send the marker to
+     * @param markerID The uuid of the marker entity
+     */
+    fun sendFromMarker(player: Player, markerID: UUID) {
+        // Get marker entity
+        val marker = player.world.getEntity(markerID) ?: return
+
+        // Utility function
+        fun <C : Any> get(key: String, type: PersistentDataType<*, C>): C? =
+            marker.persistentDataContainer.get(NamespacedKey.minecraft("gamestats_hologram_$key"), type)
+
+        // Get data
+        val lines = get("lines", PersistentDataType.LIST.strings()) ?: listOf()
+
+        // Send hologram
+        sendHologram(
+            player,
+            marker.location,
+            *lines.toTypedArray()
+        )
+    }
+
+    /**
+     * Spawns a marker
+     * @param location The location
+     * @param lines The lines of the hologram
+     */
+    fun spawnMarker(location: Location, vararg lines: String) {
+        val marker = location.world.spawnEntity(location, org.bukkit.entity.EntityType.ARMOR_STAND, true)
+        marker.isInvisible = true
+        marker.isInvulnerable = true
+        marker.setGravity(false)
+
+        fun <C : Any> set(key: String, type: PersistentDataType<*, C>, value: C) =
+            marker.persistentDataContainer.set(NamespacedKey.minecraft("gamestats_hologram_$key"), type, value)
+
+        set("lines", PersistentDataType.LIST.strings(), lines.toList())
+
+        // Register marker
+        markers = markers.apply { add(marker.uniqueId) }
+    }
+
+    /**
      * Updates the hologram for a player
      * @param player The player
      */
     fun update(player: Player) {
-        val pos = hologramPosition ?: return
-        val lines = hologramLines.takeIf { it.isNotEmpty() } ?: return
-
         // Remove all
         holograms.remove(player)?.let {
             it.forEach { id ->
@@ -128,6 +158,7 @@ object HologramHelper {
             }
         }
 
-        sendHologram(player, pos, *lines.toTypedArray())
+        // Send holograms
+        markers.forEach { sendFromMarker(player, it) }
     }
 }

@@ -8,6 +8,8 @@ import de.c4vxl.gamestats.utils.StatsHelper
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
+import org.bukkit.entity.EntityType
 
 /**
  * Command for configuring stats hologram
@@ -19,19 +21,25 @@ object StatsHologramCommand {
         withPermission("${Permission.COMMAND_PREFIX.string}.stats-hologram")
 
         literalArgument("remove") {
-            anyExecutor { sender, _ ->
-                if (HologramHelper.hologramPosition == null) {
-                    sender.sendMessage(sender.language.child("gamestats").getCmp("command.stats-hologram.remove.failure.already"))
-                    return@anyExecutor
+            playerExecutor { player, _ ->
+                // Find nearest marker
+                val marker = player.getNearbyEntities(5.0, 5.0, 5.0)
+                    .find {
+                        it.persistentDataContainer.keys.contains(NamespacedKey.minecraft("gamestats_hologram_lines"))
+                    }
+
+                if (marker == null) {
+                    player.sendMessage(player.language.child("gamestats").getCmp("command.stats-hologram.remove.failure.already"))
+                    return@playerExecutor
                 }
 
-                HologramHelper.hologramPosition = null
-                HologramHelper.hologramLines = listOf()
+                // Remove marker
+                marker.remove()
 
                 // Update for every player
                 Bukkit.getOnlinePlayers().forEach { HologramHelper.update(it) }
 
-                sender.sendMessage(sender.language.child("gamestats").getCmp("command.stats-hologram.remove.success"))
+                player.sendMessage(player.language.child("gamestats").getCmp("command.stats-hologram.remove.success"))
             }
         }
 
@@ -40,14 +48,14 @@ object StatsHologramCommand {
                 replaceSuggestions(ArgumentSuggestions.strings { StatsHelper.possibleStatistics })
 
                 playerExecutor { player, args ->
-                    // Set lines
-                    HologramHelper.hologramLines =
-                        args.get("lines").toString()
+                    // Spawn marker
+                    HologramHelper.spawnMarker(
+                        player.location,
+                        *args.get("lines").toString()
                             .split(" ")
                             .filter { it in StatsHelper.possibleStatistics }
-
-                    // Set location
-                    HologramHelper.hologramPosition = player.location
+                            .toTypedArray()
+                    )
 
                     // Update for every player
                     Bukkit.getOnlinePlayers().forEach { HologramHelper.update(it) }

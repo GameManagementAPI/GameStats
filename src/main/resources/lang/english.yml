@@ -3,7 +3,7 @@
 "command.stats-hologram.desc": "Allows admins to paste a hologram with player-specific statistics into the world."
 "command.stats-hologram.create.success": "${prefix} <green>Hologram has been created successfully!</green>"
 
-"command.stats-hologram.remove.failure.already": "${prefix} <red>There is no hologram active right now!</red>"
+"command.stats-hologram.remove.failure.already": "${prefix} <red>There is no hologram near you right now!</red>"
 "command.stats-hologram.remove.success": "${prefix} <green>Successfully removed hologram!</green>"
 
 "command.stats.desc": "Allows players to view their game statistics."
@@ -17,6 +17,7 @@
 
 "stat.text._sep": "<gray>------------------</gray>"
 "stat.text._your_stats": "Your statistics:"
+"stat.text._leaderboard": "Leaderboard:"
 "stat.text._player_stats": "<gold>$0</gold>s statistics:"
 "stat.text.wins": "<gray>Games won:</gray> $1"
 "stat.text.losses": "<gray>Games lost:</gray> $1"
