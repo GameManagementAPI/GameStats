@@ -4,6 +4,7 @@ import de.c4vxl.gamemanager.language.Language
 import de.c4vxl.gamemanager.utils.ResourceUtils
 import de.c4vxl.gamestats.command.StatsCommand
 import de.c4vxl.gamestats.command.StatsHologramCommand
+import de.c4vxl.gamestats.command.TopCommand
 import de.c4vxl.gamestats.handler.GameHandler
 import de.c4vxl.gamestats.handler.HologramHandler
 import de.c4vxl.gamestats.stats.Stats
@@ -54,6 +55,7 @@ class Main : JavaPlugin() {
         // Register command
         StatsHologramCommand
         StatsCommand
+        TopCommand
 
         // Register handlers
         GameHandler()

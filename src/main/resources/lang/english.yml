@@ -11,6 +11,10 @@
 "command.stat.msg.specific.l1": "${prefix} Your statistic for <gray>$0</gray>:"
 "command.stat.msg.l2": "<gray>[</gray><white>+</white><gray>]</gray> $0"
 
+"command.top.desc": "Returns the top 10 players in the leaderboard according to a specified statistic."
+"command.top.msg.all.l1": "${prefix} Leaderboard:"
+"command.top.msg.all.l2": "<gray>[</gray><lime>#$0</lime><gray>]</gray> $1 <gray>($2)</gray>"
+
 "stat.text._sep": "<gray>------------------</gray>"
 "stat.text._your_stats": "Your statistics:"
 "stat.text._player_stats": "<gold>$0</gold>s statistics:"
