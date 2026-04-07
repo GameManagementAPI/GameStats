@@ -35,6 +35,7 @@ object HologramCommand {
                 }
 
                 // Remove marker
+                HologramHelper.markers = HologramHelper.markers.apply { remove(marker.uniqueId) }
                 marker.remove()
 
                 // Update for every player
