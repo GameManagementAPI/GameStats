@@ -53,9 +53,9 @@ object HologramCommand {
                     Statistic.entries.map { it.name.lowercase() }.toTypedArray()
                 }), optional = true) {
                     playerExecutor { player, args ->
-                        val criteria = Statistic.valueOf(args.getOptional("criteria").getOrNull()?.toString()
+                        val criteria = Statistic.valueOf((args.getOptional("criteria").getOrNull()?.toString()
                             ?: Main.config.getString("config.default-leaderboard-statistic")
-                            ?: "WIN")
+                            ?: "WIN").uppercase())
 
                         // Spawn marker
                         HologramHelper.spawnMarker(
