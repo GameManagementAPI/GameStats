@@ -149,6 +149,12 @@ object HologramHelper {
             add("_leaderboard")
             add("_sep")
 
+            if (leaderboard.isEmpty())
+                addAll(listOf(
+                    language.get("leaderboard.empty.l1"),
+                    language.get("leaderboard.empty.l2")
+                ))
+
             for (i in 1..10) {
                 val entry = leaderboard.getOrNull(i - 1) ?: break
                 val pl = Bukkit.getOfflinePlayer(entry.first)

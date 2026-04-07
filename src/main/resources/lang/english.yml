@@ -17,7 +17,7 @@
 
 "stat.text._sep": "<gray>------------------</gray>"
 "stat.text._your_stats": "Your statistics:"
-"stat.text._leaderboard": "Leaderboard:"
+"stat.text._leaderboard": "<gold>Leaderboard:</gold>"
 "stat.text._player_stats": "<gold>$0</gold>s statistics:"
 "stat.text.wins": "<gray>Games won:</gray> $1"
 "stat.text.losses": "<gray>Games lost:</gray> $1"
@@ -32,6 +32,9 @@
 "stat.text.netwins": "<gray>Net wins:</gray> $1"
 "stat.text.winrate": "<gray>Win rate:</gray> $1%"
 "stat.text.totalgames": "<gray>Total games played:</gray> $1"
+
 "leaderboard.top3": "<gold>#$0</gold> $1 <gray>($2)</gray>"
 "leaderboard.bottom": "<grey>#$0</grey> $1 <gray>($2)</gray>"
 "leaderboard.self": "<gray>Your place:</gray> #$0"
+"leaderboard.empty.l1": "<gray>There are currently no entries here</gray>"
+"leaderboard.empty.l2": "<gray>Start playing to appear on the board</gray>"
