@@ -36,6 +36,12 @@ object TopCommand {
                 // Build component
                 var component = lang.getCmp("command.top.msg.all.l1")
 
+                if (leaderboard.isEmpty())
+                    component = component.appendNewline()
+                        .append(lang.getCmp("leaderboard.empty.l1"))
+                        .appendNewline()
+                        .append(lang.getCmp("leaderboard.empty.l2"))
+
                 for (i in 1..10) {
                     val entry = leaderboard.getOrNull(i - 1)
                     val uuid = entry?.first ?: break
