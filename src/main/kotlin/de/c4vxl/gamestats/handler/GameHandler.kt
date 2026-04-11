@@ -3,8 +3,8 @@ package de.c4vxl.gamestats.handler
 import de.c4vxl.gamemanager.gma.event.player.*
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
 import de.c4vxl.gamestats.Main
-import de.c4vxl.gamestats.stats.data.type.Statistic
 import de.c4vxl.gamestats.stats.Stats
+import de.c4vxl.gamestats.stats.data.type.Statistic
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,7 +21,7 @@ class GameHandler : Listener {
     }
 
     @EventHandler
-    fun onLoose(event: GamePlayerLooseEvent) {
+    fun onLoose(event: GamePlayerLoseEvent) {
         Stats.modify(event.player) { recordAction(Statistic.LOSS) }
     }
 
