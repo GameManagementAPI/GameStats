@@ -132,11 +132,13 @@ object HologramHelper {
             )
 
         // Send hologram
-        sendHologram(
-            player,
-            marker.location,
-            *lines.toTypedArray()
-        )
+        Bukkit.getScheduler().callSyncMethod(Main.instance) {
+            sendHologram(
+                player,
+                marker.location,
+                *lines.toTypedArray()
+            )
+        }
     }
 
     private fun buildLeaderboardLines(player: Player, statistic: Statistic): List<String> {

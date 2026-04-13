@@ -17,21 +17,29 @@ class HologramHandler : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        HologramHelper.update(event.player)
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            HologramHelper.update(event.player)
+        }, 10)
     }
 
     @EventHandler
     fun onWorldChange(event: PlayerChangedWorldEvent) {
-        HologramHelper.update(event.player)
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            HologramHelper.update(event.player)
+        }, 10)
     }
 
     @EventHandler
     fun onGameJoin(event: GamePlayerJoinedEvent) {
-        HologramHelper.update(event.player.bukkitPlayer)
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            HologramHelper.update(event.player.bukkitPlayer)
+        }, 10)
     }
 
     @EventHandler
     fun onGameQuit(event: GamePlayerQuitEvent) {
-        HologramHelper.update(event.player.bukkitPlayer)
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            HologramHelper.update(event.player.bukkitPlayer)
+        }, 10)
     }
 }
