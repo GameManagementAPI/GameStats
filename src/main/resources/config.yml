@@ -4,3 +4,6 @@ config:
 
   # The default statistic to be used for leaderboards
   default-leaderboard-statistic: "WIN"
+
+  # The interval (in seconds) to save the db cache
+  cache-save-interval: 36000

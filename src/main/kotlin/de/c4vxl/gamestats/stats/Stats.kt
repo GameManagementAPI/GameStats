@@ -35,7 +35,7 @@ object Stats {
             saveAll()
             Leaderboard.rebuildCache()
             allUUIDs = computeUUIDs()
-        }, 0, 20 * 60 * 10)
+        }, 0, 20L * Main.config.getInt("config.cache-save-interval", 36000))
     }
 
     /**
