@@ -19,20 +19,22 @@ object Stats {
      */
     private val cache = ConcurrentHashMap<UUID, StatsCache>()
 
-    /**
-     * Holds a cache of all db keys
-     */
-    private val allUUIDs: List<UUID> by lazy {
+    private fun computeUUIDs() =
         StatsConfig.dbDir.listFiles()
             ?.map { UUID.fromString(it.nameWithoutExtension) }
             ?: emptyList()
-    }
+
+    /**
+     * Holds a cache of all db keys
+     */
+    private var allUUIDs: List<UUID> = computeUUIDs()
 
     init {
         // Register automatic saving of data cache
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, Runnable {
             saveAll()
             Leaderboard.rebuildCache()
+            allUUIDs = computeUUIDs()
         }, 0, 20 * 60 * 10)
     }
 
