@@ -17,11 +17,19 @@ class GameHandler : Listener {
 
     @EventHandler
     fun onWin(event: GamePlayerWinEvent) {
+        // Don't count private games
+        if (event.game.isPrivate)
+            return
+
         Stats.modify(event.player) { recordAction(Statistic.WIN) }
     }
 
     @EventHandler
     fun onLoose(event: GamePlayerLoseEvent) {
+        // Don't count private games
+        if (event.game.isPrivate)
+            return
+
         Stats.modify(event.player) { recordAction(Statistic.LOSS) }
     }
 
@@ -33,16 +41,28 @@ class GameHandler : Listener {
         if (!player.gma.isInGame) return
         if (!killer.gma.isInGame) return
 
+        // Don't count private games
+        if (event.player.gma.game?.isPrivate ?: return)
+            return
+
         Stats.modify(killer) { recordAction(Statistic.KILL) }
     }
 
     @EventHandler
     fun onDeath(event: GamePlayerDeathEvent) {
+        // Don't count private games
+        if (event.game.isPrivate)
+            return
+
         Stats.modify(event.player) { recordAction(Statistic.DEATH) }
     }
 
     @EventHandler
     fun onEliminate(event: GamePlayerEliminateEvent) {
+        // Don't count private games
+        if (event.game.isPrivate)
+            return
+
         event.killer?.let {
             Stats.modify(it) { recordAction(Statistic.ELIMINATION) }
         }
@@ -50,6 +70,10 @@ class GameHandler : Listener {
 
     @EventHandler
     fun onGameQuit(event: GamePlayerQuitEvent) {
+        // Don't count private games
+        if (event.game.isPrivate)
+            return
+
         Stats.modify(event.player.bukkitPlayer) {
             currentKills = 0
             currentEliminations = 0
